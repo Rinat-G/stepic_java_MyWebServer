@@ -28,6 +28,7 @@ public class SignInServlet extends HttpServlet {
         pageVariables.put("actionUrl", "/signin");
         pageVariables.put("welcomeText","For sign in enter you creds:");
         pageVariables.put("actionButton", "Sing IN!");
+        pageVariables.put("NotYetRegistered", "Not yet registered? <a href=\"http://192.168.0.101:8080/signup\">Sign up!</a>");
 
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
@@ -65,6 +66,7 @@ public class SignInServlet extends HttpServlet {
 
         accountService.addSession(request.getSession().getId(), profile);
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println("Authorized: " + login);
+        response.sendRedirect("http://192.168.0.101:8080/chat");
+//        response.getWriter().println("Authorized: " + login);
     }
 }

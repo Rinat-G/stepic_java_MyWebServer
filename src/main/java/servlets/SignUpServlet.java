@@ -30,6 +30,7 @@ public class SignUpServlet extends HttpServlet {
         pageVariables.put("actionUrl", "/signup");
         pageVariables.put("welcomeText","For sign up enter you creds:");
         pageVariables.put("actionButton", "Sing UP!");
+        pageVariables.put("NotYetRegistered", "");
 
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
@@ -63,7 +64,7 @@ public class SignUpServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().println(new StringBuilder("Account created! Login:").append(login)
-                .append(" E-mail:").append(email).toString());
+                .append(" E-mail:").append(email).append("\n<a href=\"http://192.168.0.101:8080/signin\">And now Sign in!</a>").toString());
         //Вариант с выгрузкой json в ответе.
 //        Gson gson = new Gson();
 //        String json = gson.toJson(userProfile);
