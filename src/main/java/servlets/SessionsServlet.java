@@ -1,8 +1,9 @@
 package servlets;
 
 import accounts.AccountService;
-import accounts.UserProfile;
 import com.google.gson.Gson;
+import dbService.DBException;
+import dbService.dataSets.UsersDataSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,7 +29,7 @@ public class SessionsServlet extends HttpServlet {
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
         String sessionId = request.getSession().getId();
-        UserProfile profile = accountService.getUserBySessionId(sessionId);
+        UsersDataSet profile = accountService.getUserBySessionId(sessionId);
         if (profile == null) {
             response.setContentType("text/html;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -53,8 +54,17 @@ public class SessionsServlet extends HttpServlet {
             return;
         }
 
-        UserProfile profile = accountService.getUserByLogin(login);
-        if (profile == null || !profile.getPass().equals(pass)) {
+        UsersDataSet profile;
+        try {
+            profile = accountService.getUserByLogin(login);
+        } catch (DBException e) {
+            e.printStackTrace();
+            response.getWriter().println(e.toString());
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return;
+        }
+
+        if (profile == null || !profile.getPassword().equals(pass)) {
             response.setContentType("text/html;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
@@ -72,7 +82,7 @@ public class SessionsServlet extends HttpServlet {
     public void doDelete(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
         String sessionId = request.getSession().getId();
-        UserProfile profile = accountService.getUserBySessionId(sessionId);
+        UsersDataSet profile = accountService.getUserBySessionId(sessionId);
         if (profile == null) {
             response.setContentType("text/html;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

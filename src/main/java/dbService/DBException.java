@@ -8,7 +8,7 @@ package dbService;
  *         Описание курса и лицензия: https://github.com/vitaly-chibrikov/stepic_java_webserver
  */
 public class DBException extends Exception {
-    public DBException(Throwable throwable) {
+    DBException(Throwable throwable) {
         super(throwable);
     }
 }

@@ -20,8 +20,14 @@ public class UsersDataSet implements Serializable { // Serializable Important to
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name", unique = true, updatable = false)
-    private String name;
+    @Column(name = "login", unique = true, updatable = false)
+    private String login;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "email", unique = true)
+    private String email;
 
     //Important to Hibernate!
     @SuppressWarnings("UnusedDeclaration")
@@ -29,38 +35,61 @@ public class UsersDataSet implements Serializable { // Serializable Important to
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public UsersDataSet(long id, String name) {
+    public UsersDataSet(long id, String login) {
         this.setId(id);
-        this.setName(name);
+        this.setLogin(login);
     }
 
-    public UsersDataSet(String name) {
+    public UsersDataSet(String login, String password, String email) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+    }
+
+
+    public UsersDataSet(String login) {
         this.setId(-1);
-        this.setName(name);
+        this.setLogin(login);
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public String getName() {
-        return name;
+    public String getLogin() {
+        return login;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    private void setLogin(String login) {
+        this.login = login;
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    private void setId(long id) {
         this.id = id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    private void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    private void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
     public String toString() {
         return "UserDataSet{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", login='" + login + '\'' +
                 '}';
     }
 }

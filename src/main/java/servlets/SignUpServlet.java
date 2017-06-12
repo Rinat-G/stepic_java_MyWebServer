@@ -1,8 +1,9 @@
 package servlets;
 
 import accounts.AccountService;
-import accounts.UserProfile;
 import com.google.gson.Gson;
+import dbService.DBException;
+import dbService.dataSets.UsersDataSet;
 import templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -13,9 +14,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Rocky on 10.06.2017.
- */
+
 public class SignUpServlet extends HttpServlet {
     private final AccountService accountService;
 
@@ -41,22 +40,30 @@ public class SignUpServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter("login");
-        String pass = request.getParameter("password");
+        String password = request.getParameter("password");
 
-        if (login == null || pass == null) {
+        if (login == null || password == null) {
             response.setContentType("text/html;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
-        String userMail = login + "@example.mail";
-        UserProfile userProfile = new UserProfile(login, pass, userMail);
+        String email = login + "@example.mail";
+        UsersDataSet userProfile = new UsersDataSet(login, password, email);
 
-        accountService.addNewUser(userProfile);
+        try {
+            accountService.addNewUser(userProfile);
+        } catch (DBException e) {
+            e.printStackTrace();
+            response.getWriter().println(e.toString());
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return;
+        }
 
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
-
+        response.getWriter().println(new StringBuilder("Account created! Login:").append(login)
+                .append(" E-mail:").append(email).toString());
         //Вариант с выгрузкой json в ответе.
 //        Gson gson = new Gson();
 //        String json = gson.toJson(userProfile);

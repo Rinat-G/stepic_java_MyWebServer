@@ -1,7 +1,8 @@
 package servlets;
 
 import accounts.AccountService;
-import accounts.UserProfile;
+import dbService.DBException;
+import dbService.dataSets.UsersDataSet;
 import templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -12,9 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Rocky on 10.06.2017.
- */
+
 public class SignInServlet extends HttpServlet {
     private final AccountService accountService;
     public SignInServlet(AccountService accountService) {
@@ -38,16 +37,26 @@ public class SignInServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter("login");
-        String pass = request.getParameter("password");
+        String password = request.getParameter("password");
 
-        if (login == null || pass == null) {
+        if (login == null || password == null) {
             response.setContentType("text/html;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
-        UserProfile profile = accountService.getUserByLogin(login);
-        if (profile == null || !profile.getPass().equals(pass)) {
+        UsersDataSet profile;
+        try {
+            profile = accountService.getUserByLogin(login);
+        } catch (DBException e) {
+            e.printStackTrace();
+            response.getWriter().println(e.toString());
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return;
+        }
+
+
+        if (profile == null || !profile.getPassword().equals(password)) {
             response.setContentType("text/html;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().println("Unauthorized");
