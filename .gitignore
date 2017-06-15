@@ -1,6 +1,6 @@
+.idea/
+target/
+out/
 server.jar
-target
-out
 h2db.mv.db
 h2db.trace.db
-.idea
