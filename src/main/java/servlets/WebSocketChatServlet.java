@@ -3,6 +3,7 @@ package servlets;
 import accounts.AccountService;
 import chat.ChatService;
 import chat.ChatWebSocket;
+import configuration.SrvConfig;
 import dbService.dataSets.UsersDataSet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
 import org.eclipse.jetty.websocket.servlet.WebSocketServletFactory;
@@ -10,7 +11,6 @@ import templater.PageGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -34,19 +34,20 @@ public class WebSocketChatServlet extends WebSocketServlet {
         Map<String, Object> pageVariables = new HashMap<>();
         String sessionID = req.getSession().getId();
         UsersDataSet user = accountService.getUserBySessionId(sessionID);
-        if (user == null){
-            resp.sendRedirect("http://192.168.0.101:8080/signin");
+        if (user == null) {
+            resp.sendRedirect(SrvConfig.getInstance().getHttpHostPort() +
+                    "/signin");
             resp.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);
             return;
         }
-        pageVariables.put("username",user.getLogin());
+        pageVariables.put("username", user.getLogin());
+        pageVariables.put("hostPort", SrvConfig.getInstance().getHostPort());
 
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.getWriter().println(PageGenerator.instance().getPage("chat.html", pageVariables));
         resp.setContentType("text/html;charset=utf-8");
 
     }
-
 
 
     @Override

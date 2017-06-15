@@ -1,3 +1,5 @@
+package configuration;
+
 import configuration.SrvConfig;
 import org.junit.Test;
 
@@ -28,5 +30,18 @@ public class SrvConfigTest {
     public void testGetPropertyUncheckedException() throws Exception {
         String value = SrvConfig.getInstance().getProperty("Some_sring");
 
+    }
+
+    @Test
+    public void testGetHostPort(){
+        String value = SrvConfig.getInstance().getHostPort();
+        assertEquals("localhost:8080", value);
+
+    }
+
+    @Test
+    public void testGetHttpHostPort(){
+        String value = SrvConfig.getInstance().getHttpHostPort();
+        assertEquals("http://localhost:8080",value);
     }
 }

@@ -14,7 +14,7 @@ import java.util.Map;
  *         <p>
  *         Описание курса и лицензия: https://github.com/vitaly-chibrikov/stepic_java_webserver
  */
-public class AccountService {
+public class AccountService implements AccountServiceInterface{
     //    private final Map<String, UsersDataSet> loginToProfile;
     private final Map<String, UsersDataSet> sessionIdToProfile;
     private final DBService dbService;
@@ -26,6 +26,7 @@ public class AccountService {
         dbService.printConnectInfo();
     }
 
+    @Override
     public void addNewUser(UsersDataSet usersDataSet) throws DBException {
         dbService.addUser(usersDataSet);
     }
@@ -45,4 +46,5 @@ public class AccountService {
     public void deleteSession(String sessionId) {
         sessionIdToProfile.remove(sessionId);
     }
+
 }
