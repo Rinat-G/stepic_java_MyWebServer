@@ -42,10 +42,10 @@ public class WebSocketChatServlet extends WebSocketServlet {
         }
         pageVariables.put("username", user.getLogin());
         pageVariables.put("hostPort", SrvConfig.getInstance().getHostPort());
-
+        resp.setContentType("text/html;charset=utf-8");
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.getWriter().println(PageGenerator.instance().getPage("chat.html", pageVariables));
-        resp.setContentType("text/html;charset=utf-8");
+
 
     }
 

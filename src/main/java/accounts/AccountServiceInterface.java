@@ -1,5 +1,6 @@
 package accounts;
 
+import dbService.DBException;
 import dbService.dataSets.UsersDataSet;
 
 /**
@@ -7,7 +8,7 @@ import dbService.dataSets.UsersDataSet;
  */
 public interface AccountServiceInterface {
 
-    void addNewUser(UsersDataSet usersDataSet);
+    void addNewUser(UsersDataSet usersDataSet) throws DBException;
 
     void removeUser();
 

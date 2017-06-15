@@ -47,4 +47,23 @@ public class AccountService implements AccountServiceInterface{
         sessionIdToProfile.remove(sessionId);
     }
 
+    @Override
+    public void removeUser() {
+
+    }
+
+    @Override
+    public int getUsersLimit() {
+        return 0;
+    }
+
+    @Override
+    public void setUsersLimit(int usersLimit) {
+
+    }
+
+    @Override
+    public int getUsersCount() {
+        return 0;
+    }
 }
